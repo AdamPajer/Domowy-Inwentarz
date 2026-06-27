@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 // ⚠️ PAMIĘTAJ O SWOIM IP (takim samym jak w index.tsx)
-const API_URL = 'http://192.168.8.156:8000/api/products/';
+const API_URL = 'https://adampajer.pythonanywhere.com/api/products/';
 
 interface Product {
   id: number;

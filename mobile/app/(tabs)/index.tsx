@@ -23,7 +23,7 @@ export default function IndexScreen() {
   const FILTER_OPTIONS = ['Wszystkie', ...PREDEFINED_LOCATIONS];
 
   // PAMIĘTAJ O SWOIM IP!
-  const API_URL = 'http://192.168.8.156:8000/api/products/';
+  const API_URL = 'https://adampajer.pythonanywhere.com/api/products/';
 
   const fetchProducts = async () => {
     try {
