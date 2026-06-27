@@ -19,7 +19,11 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: Platform.select({
           ios: { position: 'absolute' },
-          default: {},
+          default: {
+            height: 65,            // Zwiększamy całkowitą wysokość paska
+            paddingBottom: 10,     // Podnosimy napisy do góry, żeby nie dotykały krawędzi
+            paddingTop: 5,         // Dajemy lekki oddech od góry
+          },
         }),
         // --- NOWE: Powiększenie czcionki ---
         tabBarLabelStyle: {
