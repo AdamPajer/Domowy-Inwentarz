@@ -151,25 +151,12 @@ export default function IndexScreen() {
     }
   };
 
-  // --- NOWE: Szybka zmiana ilości z przycisków +/- ---
   const updateQuantity = async (item: any, change: number) => {
     const currentQuantity = parseFloat(item.quantity);
     const newQuantity = currentQuantity + change;
 
-    if (newQuantity <= 0) {
-      // (window as any) ucisza błąd Vercela i zmusza go do zaakceptowania kodu
-      const shouldDelete = (window as any).confirm(`Ilość produktu "${item.name}" wynosi 0. Czy usunąć go z listy?\n\n[OK] - Usuń produkt\n[Anuluj] - Zostaw 0`);
-
-      if (shouldDelete) {
-        try {
-          await axios.delete(`${API_URL}${item.id}/`);
-          fetchProducts();
-        } catch (e) {
-          console.error(e);
-        }
-      } else {
-        saveQuantityToServer(item.id, 0);
-      }
+    // Blokada przed ujemnymi wartościami (nie pozwalamy zejść poniżej 0)
+    if (newQuantity < 0) {
       return;
     }
 
