@@ -157,11 +157,10 @@ export default function IndexScreen() {
     const newQuantity = currentQuantity + change;
 
     if (newQuantity <= 0) {
-      // Zmieniamy mobilny Alert na przeglądarkowy window.confirm
-      const shouldDelete = window.confirm(`Ilość produktu "${item.name}" wynosi 0. Czy usunąć go z listy?\n\n[OK] - Usuń produkt\n[Anuluj] - Zostaw 0`);
+      // (window as any) ucisza błąd Vercela i zmusza go do zaakceptowania kodu
+      const shouldDelete = (window as any).confirm(`Ilość produktu "${item.name}" wynosi 0. Czy usunąć go z listy?\n\n[OK] - Usuń produkt\n[Anuluj] - Zostaw 0`);
 
       if (shouldDelete) {
-        // Użytkownik kliknął OK - usuwamy
         try {
           await axios.delete(`${API_URL}${item.id}/`);
           fetchProducts();
@@ -169,11 +168,8 @@ export default function IndexScreen() {
           console.error(e);
         }
       } else {
-        // Użytkownik kliknął Anuluj - zapisujemy jako 0
         saveQuantityToServer(item.id, 0);
       }
-      return; // Przerywamy dalsze wykonywanie funkcji
-    }
       return;
     }
 
