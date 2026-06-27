@@ -95,7 +95,7 @@ export default function IndexScreen() {
 
   const saveChanges = async () => {
     if (!editName) {
-      Alert.alert("Błąd", "Nazwa produktu nie może być pusta!");
+      alert("Błąd: Nazwa produktu nie może być pusta!"); // Zmienione na webowy alert
       return;
     }
 
@@ -113,25 +113,33 @@ export default function IndexScreen() {
     }
 
     if (editImageUri && !editImageUri.startsWith('http')) {
-      const filename = editImageUri.split('/').pop() || 'photo.jpg';
-      const match = /\.(\w+)$/.exec(filename);
-      const type = match ? `image/${match[1]}` : `image/jpeg`;
-      formData.append('image', { uri: editImageUri, name: filename, type: type } as any);
+      try {
+        // NOWE: Uniwersalny sposób na zdjęcia w PWA - konwersja na prawdziwy plik (Blob)
+        const response = await fetch(editImageUri);
+        const blob = await response.blob();
+        formData.append('image', blob, 'photo.jpg');
+      } catch (imgError) {
+        console.error("Błąd przygotowania zdjęcia:", imgError);
+        alert("Błąd przy przetwarzaniu zdjęcia.");
+        return;
+      }
     }
 
     try {
       if (isAddMode) {
         await axios.post(API_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-        Alert.alert("Sukces", "Dodano nowy produkt!");
+        alert("Sukces: Dodano nowy produkt!"); // Zmienione na webowy alert
       } else {
         await axios.patch(`${API_URL}${selectedProductId}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-        Alert.alert("Sukces", "Zaktualizowano produkt!");
+        alert("Sukces: Zaktualizowano produkt!");
       }
       setModalVisible(false);
       fetchProducts();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      Alert.alert("Błąd", "Nie udało się zapisać zmian w bazie.");
+      // Wyciągamy dokładny błąd z serwera, żeby nie zgadywać w ciemno
+      const serverMsg = error.response?.data ? JSON.stringify(error.response.data) : error.message;
+      alert(`Błąd zapisu: ${serverMsg}`);
     }
   };
 
