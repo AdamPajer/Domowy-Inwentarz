@@ -136,15 +136,20 @@ export default function IndexScreen() {
   };
 
   const deleteProduct = async (id: number = selectedProductId!) => {
-    try {
-      await axios.delete(`${API_URL}${id}/`);
-      setModalVisible(false);
-      fetchProducts();
-    } catch (error) {
-      console.error(error);
-      alert("Błąd: Nie udało się usunąć produktu.");
+    // Używamy standardowego okienka, które w 100% działa w przeglądarkach i PWA
+    const isConfirmed = window.confirm("Czy na pewno chcesz usunąć ten produkt z bazy?");
+
+    if (isConfirmed) {
+      try {
+        await axios.delete(`${API_URL}${id}/`);
+        setModalVisible(false);
+        fetchProducts();
+      } catch (error) {
+        console.error(error);
+        alert("Błąd: Nie udało się usunąć produktu.");
+      }
     }
-};
+  };
 
   // --- NOWE: Szybka zmiana ilości z przycisków +/- ---
   const updateQuantity = async (item: any, change: number) => {
