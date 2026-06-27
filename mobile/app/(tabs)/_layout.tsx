@@ -21,6 +21,11 @@ export default function TabLayout() {
           ios: { position: 'absolute' },
           default: {},
         }),
+        // --- NOWE: Powiększenie czcionki ---
+        tabBarLabelStyle: {
+          fontSize: 15,
+          fontWeight: 'bold',
+        },
       }}>
       <Tabs.Screen
         name="index"
