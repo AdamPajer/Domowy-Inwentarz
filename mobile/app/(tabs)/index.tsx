@@ -135,29 +135,16 @@ export default function IndexScreen() {
     }
   };
 
-  const deleteProduct = (id: number = selectedProductId!) => {
-    Alert.alert(
-      "Usuń produkt",
-      "Czy na pewno chcesz usunąć ten produkt z bazy?",
-      [
-        { text: "Anuluj", style: "cancel" },
-        {
-          text: "Usuń",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await axios.delete(`${API_URL}${id}/`);
-              setModalVisible(false);
-              fetchProducts();
-            } catch (error) {
-              console.error(error);
-              Alert.alert("Błąd", "Nie udało się usunąć produktu.");
-            }
-          }
-        }
-      ]
-    );
-  };
+  const deleteProduct = async (id: number = selectedProductId!) => {
+    try {
+      await axios.delete(`${API_URL}${id}/`);
+      setModalVisible(false);
+      fetchProducts();
+    } catch (error) {
+      console.error(error);
+      alert("Błąd: Nie udało się usunąć produktu.");
+    }
+};
 
   // --- NOWE: Szybka zmiana ilości z przycisków +/- ---
   const updateQuantity = async (item: any, change: number) => {
