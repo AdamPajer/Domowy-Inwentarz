@@ -16,7 +16,7 @@ export default function AddScreen() {
   const [location, setLocation] = useState('Spiżarnia');
 
   // PAMIĘTAJ O SWOIM IP (musi być zgodne z ipconfig)
-  const BACKEND_URL = 'http://192.168.8.156:8000/api/products/';
+  const BACKEND_URL = 'https://adampajer.pythonanywhere.com/api/products/';
 
   if (!permission) return <View />;
   if (!permission.granted) {
